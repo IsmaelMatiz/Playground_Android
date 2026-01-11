@@ -1,13 +1,17 @@
 package com.exercise.counterclickmvvm.viewmodel
 
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 
 class CounterViewModel: ViewModel() {
 
-    val counter = mutableStateOf(0)
+    private val _counter = mutableStateOf(0)
+    val counter: State<Int> = _counter
+
+
 
     fun increaseCounter() {
-        counter.value++
+        _counter.value++
     }
 }

@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,7 +27,11 @@ import com.exercise.counterclickmvvm.viewmodel.CounterViewModel
 
 class MainActivity : ComponentActivity() {
 
-    val viewModel = CounterViewModel()
+    // ✅ ESTA ES LA FORMA CORRECTA    // 'viewModels()' es un "delegate" que se encarga de:
+    // - Si es la primera vez, crea el ViewModel.
+    // - Si es una recreación (rotación), te da el que ya existía.
+    private val viewModel by viewModels<CounterViewModel>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +45,8 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun MainScreen(vm: CounterViewModel) {
-        var counter by remember { vm.counter }
+        val counter by vm.counter
+
 
         Column (modifier = Modifier.padding(8.dp)
             .fillMaxSize(),
