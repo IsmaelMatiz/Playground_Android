@@ -12,6 +12,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -20,7 +24,6 @@ import androidx.compose.ui.unit.sp
 import com.exercise.counterclickmvvm.ui.theme.CounterClickMVVMTheme
 
 class MainActivity : ComponentActivity() {
-    var counter = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +37,10 @@ class MainActivity : ComponentActivity() {
 
     @Composable
     fun MainScreen() {
+        // 'remember' hace que el valor se mantenga durante la vida del Composable
+        // 'mutableStateOf' le dice a Compose: "Si esto cambia, redibuja lo que lo use"
+        var counter by remember { mutableStateOf(0) }
+
         Column (modifier = Modifier.padding(8.dp)
             .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
