@@ -22,24 +22,25 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.exercise.counterclickmvvm.ui.theme.CounterClickMVVMTheme
+import com.exercise.counterclickmvvm.viewmodel.CounterViewModel
 
 class MainActivity : ComponentActivity() {
+
+    val viewModel = CounterViewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             CounterClickMVVMTheme {
-                MainScreen()
+                MainScreen(viewModel)
             }
         }
     }
 
     @Composable
-    fun MainScreen() {
-        // 'remember' hace que el valor se mantenga durante la vida del Composable
-        // 'mutableStateOf' le dice a Compose: "Si esto cambia, redibuja lo que lo use"
-        var counter by remember { mutableStateOf(0) }
+    fun MainScreen(vm: CounterViewModel) {
+        var counter by remember { vm.counter }
 
         Column (modifier = Modifier.padding(8.dp)
             .fillMaxSize(),
@@ -53,7 +54,7 @@ class MainActivity : ComponentActivity() {
             )
             Button(
                 onClick = {
-                    counter++
+                    vm.increaseCounter()
                 },
                 modifier = Modifier.padding(top = 8.dp),
                 content = {
