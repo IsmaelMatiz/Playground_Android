@@ -1,4 +1,4 @@
-package com.exercise.mvvm
+package com.exercise.mytaskmanager
 
 import org.junit.Test
 
