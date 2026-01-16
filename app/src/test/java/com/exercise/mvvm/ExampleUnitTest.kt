@@ -1,4 +1,4 @@
-package com.exercise.counterclickmvvm
+package com.exercise.mvvm
 
 import org.junit.Test
 

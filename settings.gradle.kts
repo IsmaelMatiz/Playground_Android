@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "CounterClickMVVM"
+rootProject.name = "MVVM"
 include(":app")
  
