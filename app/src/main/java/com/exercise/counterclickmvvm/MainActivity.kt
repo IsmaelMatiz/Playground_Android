@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
     // ✅ ESTA ES LA FORMA CORRECTA    // 'viewModels()' es un "delegate" que se encarga de:
     // - Si es la primera vez, crea el ViewModel.
     // - Si es una recreación (rotación), te da el que ya existía.
-    private val viewModel by viewModels<CounterViewModel>()
+    private val viewModel: CounterViewModel by viewModels()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
