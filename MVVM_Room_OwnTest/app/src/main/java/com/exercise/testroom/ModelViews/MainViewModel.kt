@@ -8,6 +8,8 @@ import com.exercise.testroom.data.source.db.Bussines
 import com.exercise.testroom.data.source.db.User
 import com.exercise.testroom.data.source.db.UserWithBusinesses
 import com.exercise.testroom.data.source.repos.UsersRepository
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 
 class MainViewModel(val repository: UsersRepository) : ViewModel()  {
@@ -28,6 +30,35 @@ class MainViewModel(val repository: UsersRepository) : ViewModel()  {
 
     private val _usersWithBusinesses = mutableStateOf(listOf<UserWithBusinesses>())
     val usersWithBusinesses: State<List<UserWithBusinesses>> = _usersWithBusinesses
+
+    private val _errorMessage = MutableSharedFlow<String>()
+    val errorMessage: SharedFlow<String> = _errorMessage
+
+    fun onFullNameChange(newValue: String) {
+        _fullName.value = newValue
+    }
+
+    fun onAgeChange(newValue: String) {
+        if (newValue.toIntOrNull() == null){
+            viewModelScope.launch {
+                _errorMessage.emit("Edad debe ser un numero")
+            }
+            return
+        }
+        _age.value = newValue
+    }
+
+    fun onEmailChange(newValue: String) {
+        _email.value = newValue
+    }
+
+    fun onBusinessNameChange(newValue: String) {
+        _businessName.value = newValue
+    }
+
+    fun onBusinessImageChange(newValue: String) {
+        _businessImage.value = newValue
+    }
 
     init {
         getAllUsers()
@@ -52,12 +83,14 @@ class MainViewModel(val repository: UsersRepository) : ViewModel()  {
                 )
 
                 addUserWithBusiness(user, business)
+            }else{
+                val user = User( fullName = _fullName.value,
+                    age = _age.value.toInt(), email = _email.value )
+
+                addUser(user)
             }
 
-            val user = User( fullName = _fullName.value,
-                age = _age.value.toInt(), email = _email.value )
-
-            addUser(user)
+            getAllUsers()
         } else{
             // Handle invalid input
         }
@@ -81,6 +114,8 @@ class MainViewModel(val repository: UsersRepository) : ViewModel()  {
         viewModelScope.launch {
             repository.deleteUser(userId)
         }
+
+        getAllUsers()
     }
 }
 

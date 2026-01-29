@@ -10,15 +10,15 @@ interface UserDao {
     @Transaction
     @Query("SELECT * FROM users")
     //Puede q aqui falte el flow ojo= Flow<List<UserWithBusinesses>>
-    fun getUsersWithBusinesses(): List<UserWithBusinesses>
+    suspend fun getUsersWithBusinesses(): List<UserWithBusinesses>
 
     @Query("SELECT * FROM users")
-    fun getAllUsers(): List<User>
+    suspend fun getAllUsers(): List<User>
 
     @Upsert
-    fun upsertUser(user: User): Long
+    suspend fun upsertUser(user: User): Long
 
     @Query("DELETE FROM users WHERE id = :userId")
-    fun deleteUser(userId: Int)
+    suspend fun deleteUser(userId: Int)
 
 }
