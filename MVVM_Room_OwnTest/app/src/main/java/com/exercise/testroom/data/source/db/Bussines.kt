@@ -19,9 +19,8 @@ import androidx.room.PrimaryKey
 )
 data class Bussines(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Int = 0,
     val name: String,
-    val description: String,
     val image: String,
     val userId: Int
 )

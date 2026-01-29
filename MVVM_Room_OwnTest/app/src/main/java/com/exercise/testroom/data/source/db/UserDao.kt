@@ -9,13 +9,14 @@ import androidx.room.Upsert
 interface UserDao {
     @Transaction
     @Query("SELECT * FROM users")
+    //Puede q aqui falte el flow ojo= Flow<List<UserWithBusinesses>>
     fun getUsersWithBusinesses(): List<UserWithBusinesses>
 
     @Query("SELECT * FROM users")
     fun getAllUsers(): List<User>
 
     @Upsert
-    fun upsertUser(user: User)
+    fun upsertUser(user: User): Long
 
     @Query("DELETE FROM users WHERE id = :userId")
     fun deleteUser(userId: Int)
