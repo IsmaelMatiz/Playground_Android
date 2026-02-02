@@ -71,43 +71,31 @@ class MainViewModel(val repository: UsersRepository) : ViewModel()  {
     }
 
     fun createUser() {
-        if (_fullName.value.isNotEmpty() && _age.value.isNotEmpty()
-            && _email.value.isNotEmpty())
-        {
-            if (_businessName.value.isNotEmpty() && _businessImage.value.isNotEmpty())
-            {
-                val user = User( fullName = _fullName.value,
-                    age = _age.value.toInt(), email = _email.value )
-                val business = Bussines( name = _businessName.value, image = _businessImage.value,
-                    userId = 0  // se setea en el repo
-                )
+        if (_fullName.value.isNotEmpty() && _age.value.isNotEmpty() && _email.value.isNotEmpty()) {
+            viewModelScope.launch { // <--- Todo dentro de un mismo launch
+                if (_businessName.value.isNotEmpty() && _businessImage.value.isNotEmpty()) {
+                    val user = User(fullName = _fullName.value, age = _age.value.toInt(), email = _email.value)
+                    val business = Bussines(name = _businessName.value, image = _businessImage.value, userId = 0)
 
-                addUserWithBusiness(user, business)
-            }else{
-                val user = User( fullName = _fullName.value,
-                    age = _age.value.toInt(), email = _email.value )
+                    addUserWithBusiness(user, business) // Ahora se espera a que termine
+                } else {
+                    val user = User(fullName = _fullName.value, age = _age.value.toInt(), email = _email.value)
+                    addUser(user)
+                }
 
-                addUser(user)
+                getAllUsers()
             }
-
-            getAllUsers()
-        } else{
-            // Handle invalid input
         }
     }
 
-    private fun addUserWithBusiness(user: User, business: Bussines)
+    private suspend fun addUserWithBusiness(user: User, business: Bussines)
     {
-        viewModelScope.launch {
             repository.insertUserWithBusiness(user, business)
-        }
     }
 
-    private fun addUser(user: User)
+    private suspend fun addUser(user: User)
     {
-        viewModelScope.launch {
-            repository.insertUser(user)
-        }
+        repository.insertUser(user)
     }
 
     fun deleteUser(userId: Int){
